@@ -3,7 +3,12 @@
   functions = "functions"
 
 [[redirects]]
-  from = "/* url=:url"
-  to = "/.netlify/functions/server/:url:splat"
+  from = "/*"
+  to = "/:url"
   status = 200
-  #query = {url = ":url"}
+  query = {url = ":url"}
+
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/server"
+  status = 200
