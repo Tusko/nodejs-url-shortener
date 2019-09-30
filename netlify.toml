@@ -7,8 +7,3 @@
   to = "/:url"
   status = 200
   query = {url = ":url"}
-
-[[redirects]]
-  from = "/*"
-  to = "/.netlify/functions/server"
-  status = 200
