@@ -12,6 +12,7 @@ module.exports = {
     "no-alert": 0,
     "no-undef": 0,
     "no-underscore-dangle": 0,
-    "no-param-reassign": 0
+    "no-param-reassign": 0,
+    "no-useless-return": 0
   }
 };

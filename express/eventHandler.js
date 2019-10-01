@@ -13,6 +13,7 @@ exports.processing = (req, res) => {
   if (!req.query.url) {
     res.status(400);
     res.send(this.response(true, "Please provide URL"));
+    return;
   }
 
   const cacheKey = `__transient__${req.query.url}`;
@@ -23,7 +24,6 @@ exports.processing = (req, res) => {
   if (cachedBody && cacheTime !== "0") {
     res.status(304);
     res.send(this.response(true, cachedBody));
-    res.end();
     return;
   }
 
@@ -32,6 +32,7 @@ exports.processing = (req, res) => {
     if (short.startsWith("Error")) {
       res.status(400);
       res.json(this.response(true, short));
+      return;
     } else {
       res.json(this.response(false, short));
     }
