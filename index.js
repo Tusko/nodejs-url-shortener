@@ -1,4 +1,4 @@
-const app = require("./express/app");
+const app = require("./express/server");
 const isDev = process.env.NODE_ENV === "development";
 
 if (isDev) {
