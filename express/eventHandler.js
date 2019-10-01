@@ -1,17 +1,18 @@
 const isgd = require("isgd");
 const mcache = require("memory-cache");
 
-exports.response = (err = false, msg = "ok", url) => {
+exports.response = (err = false, msg = "ok", shortURL) => {
   const response = {
-    error: err,
-    url: url,
-    message: msg
+    url: shortURL,
+    message: msg,
+    error: err
   };
   return response;
 };
 exports.processing = (req, res) => {
   if (!req.query.url) {
-    res.status(400).json(this.response(true, "Please provide URL"));
+    res.status(400);
+    res.send(this.response(true, "Please provide URL"));
   }
 
   const cacheKey = `__transient__${req.query.url}`;
@@ -20,14 +21,17 @@ exports.processing = (req, res) => {
 
   //  return cached data
   if (cachedBody && cacheTime !== "0") {
-    res.json(this.response(true, cachedBody));
+    res.status(304);
+    res.send(this.response(true, cachedBody));
+    res.end();
     return;
   }
 
   isgd.shorten(req.query.url, short => {
     mcache.put(cacheKey, short, cacheTime * 1000);
     if (short.startsWith("Error")) {
-      res.status(400).json(this.response(true, short));
+      res.status(400);
+      res.json(this.response(true, short));
     } else {
       res.json(this.response(false, short));
     }
