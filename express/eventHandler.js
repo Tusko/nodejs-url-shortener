@@ -16,7 +16,8 @@ exports.processing = (req, res) => {
     return;
   }
 
-  const cacheKey = `__transient__${req.query.url}`;
+  const parsedUrl = req._parsedUrl.href.split("/?url=")[1];
+  const cacheKey = `__transient__${parsedUrl}`;
   const cacheTime = req.query.cache || 3600;
   const cachedBody = mcache.get(cacheKey);
 
@@ -27,7 +28,7 @@ exports.processing = (req, res) => {
     return;
   }
 
-  isgd.shorten(req.query.url, short => {
+  isgd.shorten(parsedUrl, short => {
     mcache.put(cacheKey, short, cacheTime * 1000);
     if (short.startsWith("Error")) {
       res.status(400);
